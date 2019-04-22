@@ -19,4 +19,6 @@ def add():
         'description': description,
         'status': False
     }
+
+    tasks.append(task)
     return jsonify(task), 201

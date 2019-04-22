@@ -62,3 +62,13 @@ def test_create_task_should_return_201():
             'description': 'my first task'}),
             content_type='application/json')
         assert response.status_code == 201
+
+
+def test_create_task_insert_entry_database():
+    tasks.clear()
+    client = app.test_client()
+    client.post('/task', data=json.dumps({
+            'title': 'task 1',
+            'description': 'my first task'}),
+            content_type='application/json')
+    assert len(tasks) > 0
