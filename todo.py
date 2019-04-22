@@ -1,7 +1,7 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 app = Flask('TodoApp')
 
 @app.route('/tasks')
 def list():
-    return ''
+    return jsonify([])
