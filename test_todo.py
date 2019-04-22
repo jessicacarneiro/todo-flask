@@ -86,3 +86,14 @@ def test_create_task_without_title():
         'description': 'my first task'}),
         content_type='application/json')
     assert response.status_code == 400
+
+def test_list_tasks_should_present_unfinished_first():
+    tasks.clear()
+    tasks.append({'id':1, 'title':'task 1', 'description':'test 1', 'status':True})
+    tasks.append({'id':2, 'title':'task 2', 'description':'test 2', 'status':False})
+    with app.test_client() as client:
+        response = client.get('/tasks')
+        data = json.loads(response.data.decode('utf-8'))
+        first, second = data
+        assert first['title'] == 'task 2'
+        assert second['title'] == 'task 1'
