@@ -72,3 +72,17 @@ def test_create_task_insert_entry_database():
             'description': 'my first task'}),
             content_type='application/json')
     assert len(tasks) > 0
+
+def test_create_task_without_description():
+    client = app.test_client()
+    response = client.post('/task', data=json.dumps({
+        'title': 'task 1'}),
+        content_type='application/json')
+    assert response.status_code == 400
+
+def test_create_task_without_title():
+    client = app.test_client()
+    response = client.post('/task', data=json.dumps({
+        'description': 'my first task'}),
+        content_type='application/json')
+    assert response.status_code == 400
