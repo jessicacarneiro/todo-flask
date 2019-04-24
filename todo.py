@@ -25,3 +25,7 @@ def add():
 
     tasks.append(task)
     return jsonify(task), 201
+
+@app.route('/task/<int:id_task>', methods=['DELETE'])
+def removes(id_task):
+    return '', 204

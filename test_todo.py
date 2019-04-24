@@ -97,3 +97,22 @@ def test_list_tasks_should_present_unfinished_first():
         first, second = data
         assert first['title'] == 'task 2'
         assert second['title'] == 'task 1'
+
+def test_delete_task_with_delete_verb():
+    tasks.clear()
+    with app.test_client() as client:
+        response = client.delete('/task/1')
+        assert response.status_code != 405
+
+def test_delete_existing_task_returns_204():
+        tasks.clear()
+        tasks.append({
+                'id': 1,
+                'title': 'task',
+                'description': 'task number 1',
+                'status': False
+        })
+        client = app.test_client()
+        response = client.delete('/task/1', content_type='application/json')
+        assert response.status_code == 204
+        assert response.data == b''
