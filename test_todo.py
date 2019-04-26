@@ -89,8 +89,15 @@ def test_create_task_without_title():
 
 def test_list_tasks_should_present_unfinished_first():
     tasks.clear()
-    tasks.append({'id':1, 'title':'task 1', 'description':'test 1', 'status':True})
-    tasks.append({'id':2, 'title':'task 2', 'description':'test 2', 'status':False})
+    tasks.append({
+            'id':1,
+            'title':'task 1',
+            'description':'test 1',
+            'status':True})
+    tasks.append({'id':2,
+                  'title':'task 2',
+                  'description':'test 2',
+                  'status':False})
     with app.test_client() as client:
         response = client.get('/tasks')
         data = json.loads(response.data.decode('utf-8'))
@@ -116,3 +123,16 @@ def test_delete_existing_task_returns_204():
         response = client.delete('/task/1', content_type='application/json')
         assert response.status_code == 204
         assert response.data == b''
+
+def test_delete_existing_test_works():
+        tasks.clear()
+        tasks.append({
+                'id': 1,
+                'title': 'task',
+                'description': 'task number 1',
+                'status': False
+        })
+        client = app.test_client()
+        response = client.delete('/task/1', content_type='application/json')
+        assert response.status_code == 204
+        assert len(tasks) == 0

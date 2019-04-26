@@ -27,5 +27,9 @@ def add():
     return jsonify(task), 201
 
 @app.route('/task/<int:id_task>', methods=['DELETE'])
-def removes(id_task):
+def remove(id_task):
+    task = [task for task in tasks if task['id'] == id_task]
+    if not task:
+        abort(404)
+    tasks.remove(task[0])
     return '', 204
