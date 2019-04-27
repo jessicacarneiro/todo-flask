@@ -136,3 +136,26 @@ def test_delete_existing_test_works():
         response = client.delete('/task/1', content_type='application/json')
         assert response.status_code == 204
         assert len(tasks) == 0
+
+def test_detail_existing_task():
+        tasks.clear()
+        tasks.append({
+                'id': 1,
+                'title': 'task 1',
+                'description': 'my first task',
+                'status': False
+        })
+        client = app.test_client()
+        response = client.get('/task/1', content_type='application/json')
+        data = json.loads(response.data.decode('utf-8'))
+        assert response.status_code == 200
+        assert data['id'] == 1
+        assert data['title'] == 'task 1'
+        assert data['description'] == 'my first task'
+        assert data['status'] is False
+
+def test_detail_nonexisting_task():
+        tasks.clear()
+        client = app.test_client()
+        response = client.get('/task/1', content_type='application/json')
+        assert response.status_code == 404

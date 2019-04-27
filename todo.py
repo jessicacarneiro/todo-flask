@@ -33,3 +33,10 @@ def remove(id_task):
         abort(404)
     tasks.remove(task[0])
     return '', 204
+
+@app.route('/task/<int:id_task>', methods=['GET'])
+def detail(id_task):
+    task = [task for task in tasks if task['id'] == id_task]
+    if not task:
+        abort(404)
+    return jsonify(task[0])
