@@ -6,6 +6,10 @@ app = Flask('TodoApp')
 
 tasks = []
 
+@app.route('/')
+def main():
+    return 'Hello, world!'
+
 @app.route('/tasks')
 def list():
     return jsonify(sorted(tasks, key=itemgetter('status')))

@@ -1,6 +1,12 @@
 from todo import app, tasks
 import json
 
+def test_main_page_returns_200():
+        app.config['TESTING'] = True
+        with app.test_client() as client:
+            response = client.get('/')
+            assert response.status_code == 200
+
 def test_list_tasks_should_return_200():
     app.config['TESTING'] = True
     with app.test_client() as client:
