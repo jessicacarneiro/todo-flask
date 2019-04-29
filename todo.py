@@ -1,14 +1,13 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, render_template
 from operator import itemgetter
 import json
 
 app = Flask('TodoApp')
-
 tasks = []
 
 @app.route('/')
 def main():
-    return 'Hello, world!'
+    return render_template('base.html', tasks=tasks)
 
 @app.route('/tasks')
 def list():
