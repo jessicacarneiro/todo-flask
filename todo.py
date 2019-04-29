@@ -10,7 +10,7 @@ tasks = []
 def list():
     return jsonify(sorted(tasks, key=itemgetter('status')))
 
-@app.route('/task', methods=['POST'])
+@app.route('/tasks', methods=['POST'])
 def add():
     title = request.json.get('title')
     description = request.json.get('description')
@@ -26,7 +26,7 @@ def add():
     tasks.append(task)
     return jsonify(task), 201
 
-@app.route('/task/<int:id_task>', methods=['DELETE'])
+@app.route('/tasks/<int:id_task>', methods=['DELETE'])
 def remove(id_task):
     task = [task for task in tasks if task['id'] == id_task]
     if not task:
@@ -34,14 +34,14 @@ def remove(id_task):
     tasks.remove(task[0])
     return '', 204
 
-@app.route('/task/<int:id_task>', methods=['GET'])
+@app.route('/tasks/<int:id_task>', methods=['GET'])
 def detail(id_task):
     task = [task for task in tasks if task['id'] == id_task]
     if not task:
         abort(404)
     return jsonify(task[0])
 
-@app.route('/task/<int:id_task>', methods=['PUT'])
+@app.route('/tasks/<int:id_task>', methods=['PUT'])
 def update(id_task):
     task = [task for task in tasks if task['id'] == id_task]
     if not task:
