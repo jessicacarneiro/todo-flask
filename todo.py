@@ -40,3 +40,19 @@ def detail(id_task):
     if not task:
         abort(404)
     return jsonify(task[0])
+
+@app.route('/task/<int:id_task>', methods=['PUT'])
+def update(id_task):
+    task = [task for task in tasks if task['id'] == id_task]
+    if not task:
+        abort(404)
+    title = request.json.get('title')
+    description = request.json.get('description')
+    status = request.json.get('status')
+    if not description or not title or status is None:
+        abort(400)
+    task_to_update = task[0]
+    task_to_update['title'] = title or task_to_update['title']
+    task_to_update['description'] = description or task_to_update['description']
+    task_to_update['status'] = status or task_to_update['status']
+    return jsonify(task_to_update)
