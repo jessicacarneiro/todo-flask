@@ -13,10 +13,18 @@ def main():
 def list():
     return render_template('display.html', tasks=tasks)
 
+@app.route('/add')
+def add_page():
+    return render_template('add.html')
+
 @app.route('/tasks', methods=['POST'])
 def add():
-    title = request.json.get('title')
-    description = request.json.get('description')
+    if request.content_type == 'application/json':
+        title = request.json.get('title')
+        description = request.json.get('description')
+    else:
+        title = request.form['title']
+        description = request.form['description']
     if not title or not description:
         abort(400)
     task = {
