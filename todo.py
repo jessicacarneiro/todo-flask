@@ -7,11 +7,11 @@ tasks = []
 
 @app.route('/')
 def main():
-    return render_template('base.html', tasks=tasks)
+    return render_template('base.html')
 
 @app.route('/tasks')
 def list():
-    return jsonify(sorted(tasks, key=itemgetter('status')))
+    return render_template('display.html', tasks=tasks)
 
 @app.route('/tasks', methods=['POST'])
 def add():
