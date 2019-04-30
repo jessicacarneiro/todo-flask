@@ -13,32 +13,6 @@ def test_list_tasks_should_return_200():
         response = client.get('/tasks')
         assert response.status_code == 200
 
-def test_list_tasks_should_be_json():
-    app.config['TESTING'] = True
-    with app.test_client() as client:
-        response = client.get('/tasks')
-        assert response.content_type == 'application/json'
-
-def test_list_tasks_when_empty_should_return_empty_list():
-    app.config['TESTING'] = True
-    with app.test_client() as client:
-        response = client.get('/tasks')
-        assert response.json == []
-
-def test_list_tasks_nonempty_returns_content():
-    tasks.append({'id': 1, 'title': 'task 1', 'description': 'task number 1', 'status': False})
-    app.config['TESTING'] = True
-    with app.test_client() as client:
-        response = client.get('/tasks')
-        assert response.json == [{
-            'id': 1,
-            'title': 'task 1',
-            'description': 'task number 1',
-            'status': False
-        }]
-    tasks.clear()
-
-
 def test_create_task_with_post():
     with app.test_client() as client:
         response = client.post('/tasks', data=json.dumps({
@@ -46,7 +20,6 @@ def test_create_task_with_post():
         'description': 'my first task'}),
         content_type='application/json')
         assert response.status_code != 405
-
 
 def test_create_task_returns_new_task():
     tasks.clear()
@@ -68,7 +41,6 @@ def test_create_task_should_return_201():
             'description': 'my first task'}),
             content_type='application/json')
         assert response.status_code == 201
-
 
 def test_create_task_insert_entry_database():
     tasks.clear()
@@ -92,24 +64,6 @@ def test_create_task_without_title():
         'description': 'my first task'}),
         content_type='application/json')
     assert response.status_code == 400
-
-def test_list_tasks_should_present_unfinished_first():
-    tasks.clear()
-    tasks.append({
-            'id':1,
-            'title':'task 1',
-            'description':'test 1',
-            'status':True})
-    tasks.append({'id':2,
-                  'title':'task 2',
-                  'description':'test 2',
-                  'status':False})
-    with app.test_client() as client:
-        response = client.get('/tasks')
-        data = json.loads(response.data.decode('utf-8'))
-        first, second = data
-        assert first['title'] == 'task 2'
-        assert second['title'] == 'task 1'
 
 def test_delete_task_with_delete_verb():
     tasks.clear()
