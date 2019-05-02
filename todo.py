@@ -67,3 +67,5 @@ def update(id_task):
     task_to_update['description'] = description or task_to_update['description']
     task_to_update['status'] = status or task_to_update['status']
     return jsonify(task_to_update)
+
+app.run(debug=True)
