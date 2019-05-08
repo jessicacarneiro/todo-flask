@@ -1,11 +1,15 @@
 from flask import Flask, jsonify, request, abort, render_template,\
-    redirect
+    redirect, session, flash
 from operator import itemgetter
 import json
 
 app = Flask('TodoApp')
 app.config.from_pyfile('config_file.cfg')
 tasks = []
+logins = {
+    'jessicacarneiro': '123456',
+    'adalovelace': '123456'
+}
 
 @app.route('/')
 def index():
@@ -73,3 +77,14 @@ def update(id_task):
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+@app.route('/authenticate', methods=['POST'])
+def authenticate():
+    login = request.form['login']
+    if login in logins:
+        session['logged_user'] = login
+        flash('{} logged in successfully!'.format(login))
+        return redirect('/')
+    else:
+        flash('{} does not exist!'.format(login))
+        return redirect('/login')
