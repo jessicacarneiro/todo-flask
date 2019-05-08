@@ -1,12 +1,14 @@
-from flask import Flask, jsonify, request, abort, render_template
+from flask import Flask, jsonify, request, abort, render_template,\
+    redirect
 from operator import itemgetter
 import json
 
 app = Flask('TodoApp')
+app.config.from_pyfile('config_file.cfg')
 tasks = []
 
 @app.route('/')
-def main():
+def index():
     return render_template('base.html')
 
 @app.route('/tasks')
@@ -68,4 +70,6 @@ def update(id_task):
     task_to_update['status'] = status or task_to_update['status']
     return jsonify(task_to_update)
 
-app.run(debug=True)
+@app.route('/login')
+def login():
+    return render_template('login.html')

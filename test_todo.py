@@ -183,3 +183,18 @@ def test_update_task_with_invalide_fields():
                 }
         ), content_type='application/json')
         assert response.status_code == 400
+
+def test_content_type_index_route():
+        client = app.test_client()
+        response = client.get('/')
+        assert 'text/html' in response.content_type
+
+def test_content_type_add_route():
+        client = app.test_client()
+        response = client.get('/add')
+        assert 'text/html' in response.content_type
+
+def test_content_type_login_route():
+        client = app.test_client()
+        response = client.get('/login')
+        assert 'text/html' in response.content_type
