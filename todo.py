@@ -29,20 +29,29 @@ def add():
     if request.content_type == 'application/json':
         title = request.json.get('title')
         description = request.json.get('description')
-    else:
-        title = request.form['title']
-        description = request.form['description']
-    if not title or not description:
-        abort(400)
-    task = {
+        task = {
         'id': len(tasks) + 1,
         'title': title,
         'description': description,
         'status': False
-    }
-
-    tasks.append(task)
-    return jsonify(task), 201
+        }
+        if not title or not description:
+            abort(400)
+        tasks.append(task)
+        return jsonify(task), 201
+    else:
+        title = request.form['title']
+        description = request.form['description']
+        task = {
+        'id': len(tasks) + 1,
+        'title': title,
+        'description': description,
+        'status': False
+        }
+        if not title or not description:
+            abort(400)
+        tasks.append(task)
+        return redirect('/tasks')
 
 @app.route('/remove_page')
 def remove_page():
