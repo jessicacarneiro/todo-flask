@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, abort, render_template,\
     redirect, session, flash
 from operator import itemgetter
 import json
+import sys
 
 app = Flask('TodoApp')
 app.config.from_pyfile('config_file.cfg')
@@ -43,13 +44,18 @@ def add():
     tasks.append(task)
     return jsonify(task), 201
 
-@app.route('/tasks/<int:id_task>', methods=['DELETE'])
-def remove(id_task):
-    task = [task for task in tasks if task['id'] == id_task]
+@app.route('/remove_page')
+def remove_page():
+    return render_template('delete.html', tasks=tasks)
+
+@app.route('/remove', methods=['POST'])
+def remove():
+    task_id = int(request.form['task'].partition(':')[0])
+    task = [task for task in tasks if task['id'] == task_id]
     if not task:
         abort(404)
     tasks.remove(task[0])
-    return '', 204
+    return redirect('/')
 
 @app.route('/tasks/<int:id_task>', methods=['GET'])
 def detail(id_task):

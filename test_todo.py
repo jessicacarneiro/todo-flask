@@ -65,38 +65,6 @@ def test_create_task_without_title():
         content_type='application/json')
     assert response.status_code == 400
 
-def test_delete_task_with_delete_verb():
-    tasks.clear()
-    with app.test_client() as client:
-        response = client.delete('/tasks/1')
-        assert response.status_code != 405
-
-def test_delete_existing_task_returns_204():
-        tasks.clear()
-        tasks.append({
-                'id': 1,
-                'title': 'task',
-                'description': 'task number 1',
-                'status': False
-        })
-        client = app.test_client()
-        response = client.delete('/tasks/1', content_type='application/json')
-        assert response.status_code == 204
-        assert response.data == b''
-
-def test_delete_existing_test_works():
-        tasks.clear()
-        tasks.append({
-                'id': 1,
-                'title': 'task',
-                'description': 'task number 1',
-                'status': False
-        })
-        client = app.test_client()
-        response = client.delete('/tasks/1', content_type='application/json')
-        assert response.status_code == 204
-        assert len(tasks) == 0
-
 def test_detail_existing_task():
         tasks.clear()
         tasks.append({

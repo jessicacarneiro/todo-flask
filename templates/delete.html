@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block main %}
+
+<h3>Choose a task to delete:</h3>
+
+{% if tasks %}
+<form action="{{ url_for('remove') }}" method="POST">
+<div class="form-group">
+    <label for="select_task">Select task to delete</label>
+    <select class="form-control" name="task" id="task">
+    {% for task in tasks %}
+    <option>{{ task.id }}: {{ task.title }} -- {{ task.description }}</option>
+    {% endfor %}
+    </select>
+</div>
+
+<button type="submit" class="btn btn-primary">Delete</button>
+</form>
+
+{% else %}
+<div class="alert alert-danger" role="alert">
+  No tasks to show.
+</div>
+{% endif %}
+{% endblock %}
