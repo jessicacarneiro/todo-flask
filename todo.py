@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, abort, render_template,\
-    redirect, session, flash
+    redirect, session, flash, url_for
 from operator import itemgetter
 import json
 import sys
@@ -51,7 +51,7 @@ def add():
         if not title or not description:
             abort(400)
         tasks.append(task)
-        return redirect('/tasks')
+        return redirect(url_for('list'))
 
 @app.route('/remove_page')
 def remove_page():
@@ -64,7 +64,7 @@ def remove():
     if not task:
         abort(404)
     tasks.remove(task[0])
-    return redirect('/')
+    return redirect(url_for('index'))
 
 @app.route('/tasks/<int:id_task>', methods=['GET'])
 def detail(id_task):
@@ -99,7 +99,7 @@ def authenticate():
     if login in logins:
         session['logged_user'] = login
         flash('{} logged in successfully!'.format(login))
-        return redirect('/')
+        return redirect(url_for('index'))
     else:
         flash('{} does not exist!'.format(login))
-        return redirect('/login')
+        return redirect(url_for('login'))
